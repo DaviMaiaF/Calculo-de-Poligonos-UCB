@@ -1,22 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h> // Adicionando esta linha
+#include <math.h> 
 
 typedef struct {
     float X;
     float Y;
 } Ponto;
 
+//calculo da area do tri√¢ngulo
 float AreaTriangulo(Ponto A, Ponto B, Ponto C) {
-    return fabs((A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y)) / 2.0); // AlteraÁ„o aqui
+    return fabs((A.X * (B.Y - C.Y) + B.X * (C.Y - A.Y) + C.X * (A.Y - B.Y)) / 2.0); //utiliza√ß√£o fabs
 }
 
-float AreaPoligono(Ponto *vertices, int numVertices) {
+//calculo de area do poligono 
+float AreaPoligono(Ponto *vert, int numVert) {
     float areaTotal = 0.0;
     int i;
-    for(i = 1; i < numVertices - 1; i++) {
-        areaTotal += AreaTriangulo(vertices[0], vertices[i], vertices[i + 1]);
+    for(i = 1; i < numVert - 1; i++) {
+        areaTotal += AreaTriangulo(vert[0], vert[i], vert[i + 1]);
     }
     return areaTotal;
 }
@@ -29,26 +31,26 @@ int main() {
         return 1;
     }
 
-    int numVertices;
-    fscanf(file, "%d", &numVertices);
+    int numVert;
+    fscanf(file, "%d", &numVert);
 
-    Ponto *vertices = (Ponto *)malloc(numVertices * sizeof(Ponto));
-    if (vertices == NULL) {
-        printf("Erro de alocaÁ„o de memÛria.");
+    Ponto *vert = (Ponto *)malloc(numVert * sizeof(Ponto));   
+    //Preven√ß√£o de Erro 
+    if (vert == NULL) {
+        printf("Erro de alocacao de memoria.");
         return 1;
     }
 
     int i;
-    for (i = 0; i < numVertices; i++) {
-        fscanf(file, "%f %f", &vertices[i].X, &vertices[i].Y);
+    for (i = 0; i < numVert; i++) {
+        fscanf(file, "%f %f", &vert[i].X, &vert[i].Y);
     }
 
     fclose(file);
 
-    float area = AreaPoligono(vertices, numVertices);
-    printf("A ·rea do polÌgono È %.2f\n", area);
+    float area = AreaPoligono(vert, numVert);
+    printf("A area do poligono eh %.2f\n", area);
 
-    free(vertices);
+    free(vert);
     return 0;
 }
-
